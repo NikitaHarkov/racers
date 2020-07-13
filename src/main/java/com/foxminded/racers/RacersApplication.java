@@ -19,7 +19,7 @@ public class RacersApplication {
         try {
             List<Racer> racers = list.createListOfRacers(abbreviations, starts, ends);
             ResultTable resultTable = new ResultTable();
-            List<String> result = resultTable.formatListOfRacers(racers);
+            List<String> result = resultTable.formatRacersResults(racers);
             result.forEach(System.out::println);
         } catch (IOException ex) {
             System.out.println("Error with reading files \n"+ex);

@@ -19,7 +19,7 @@ public class ResultTable {
     private static final String SPACE = " ";
     private static final String DURATION_FORMAT = "mm:ss.SSS";
 
-    public List<String> formatListOfRacers(List<Racer> racers) {
+    public List<String> formatRacersResults(List<Racer> racers) {
         if (racers == null) {
             throw new IllegalArgumentException("Null is not allowed");
         }

@@ -25,18 +25,18 @@ class ResultTableTest {
 
     @Test
     void formatListOfRacers_ShouldThrowException_WhenGivenNull(){
-        assertThrows(IllegalArgumentException.class, ()->resultTable.formatListOfRacers(null));
+        assertThrows(IllegalArgumentException.class, ()->resultTable.formatRacersResults(null));
     }
 
     @Test
     void formatListOfRacers_ShouldThrowException_WhenGivenEmptyList(){
-        assertThrows(IllegalArgumentException.class, ()->resultTable.formatListOfRacers(new ArrayList<>()));
+        assertThrows(IllegalArgumentException.class, ()->resultTable.formatRacersResults(new ArrayList<>()));
     }
 
     @Test
     void formatListOfRacers_ShouldReturnFormattedList_WhenGivenCorrectList() throws IOException {
         List<Racer> createdList = racersResults.createListOfRacers(abbreviations,starts,ends);
-        List<String> actual = resultTable.formatListOfRacers(createdList);
+        List<String> actual = resultTable.formatRacersResults(createdList);
         List<String> expecter = Arrays.asList(
                 "1.  Sebastian Vettel|FERRARI                  |01:04.415",
                 "2.  Daniel Ricciardo|RED BULL RACING TAG HEUER|01:12.013",
@@ -46,7 +46,7 @@ class ResultTableTest {
     @Test
     void formatListOfRacers_ShouldReturnFormattedListWithSeperatedLine_WhenGivenCorrectList() throws IOException {
         List<Racer> createdList = racersResults.createListOfRacers(abbreviations_19, starts_19, ends_19);
-        List<String> actual = resultTable.formatListOfRacers(createdList);
+        List<String> actual = resultTable.formatRacersResults(createdList);
         List<String> expected = Arrays.asList(
                 "1.  Sebastian Vettel |FERRARI                  |01:04.415",
                 "2.  Daniel Ricciardo |RED BULL RACING TAG HEUER|01:12.013",
