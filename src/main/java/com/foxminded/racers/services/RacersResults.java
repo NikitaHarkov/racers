@@ -8,14 +8,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public class ListOfRacers {
+public class RacersResults {
     public List<Racer> createListOfRacers(File abbreviations, File start, File end) throws IOException {
-        FileReader fileReader = new FileReader();
-        List<Racer> racers = fileReader.parseRacersFromFile(abbreviations);
+        FileParser fileParser = new FileParser();
+        List<Racer> racers = fileParser.parseRacersFromFile(abbreviations);
         LapDuration lapDuration = new LapDuration();
         Map<String, Long> lapTime = lapDuration.calculateLapTime(
-                fileReader.getStartEventTime(start),
-                fileReader.getEndEventTime(end));
+                fileParser.getStartEventTime(start),
+                fileParser.getEndEventTime(end));
         addLapTimeToRacers(racers, lapTime);
         sortByLapTime(racers);
         return racers;

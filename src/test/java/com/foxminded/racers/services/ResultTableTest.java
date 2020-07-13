@@ -12,14 +12,15 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ResultTableTest {
-    File abbreviations = new File("src/test/resources/abbreviations.txt");
-    File starts = new File("src/test/resources/start.log");
-    File ends = new File("src/test/resources/end.log");
-    File abbreviations_19 = new File("src/test/resources/abbreviations19.txt");
-    File starts_19 = new File("src/test/resources/start19.log");
-    File ends_19 = new File("src/test/resources/end19.log");
+    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    File abbreviations = new File(classLoader.getResource("abbreviations.txt").getFile());
+    File starts = new File(classLoader.getResource("start.log").getFile());
+    File ends = new File(classLoader.getResource("end.log").getFile());
+    File abbreviations_19 = new File(classLoader.getResource("abbreviations19.txt").getFile());
+    File starts_19 = new File(classLoader.getResource("start19.log").getFile());
+    File ends_19 = new File(classLoader.getResource("end19.log").getFile());
 
-    ListOfRacers listOfRacers = new ListOfRacers();
+    RacersResults racersResults = new RacersResults();
     ResultTable resultTable = new ResultTable();
 
     @Test
@@ -34,7 +35,7 @@ class ResultTableTest {
 
     @Test
     void formatListOfRacers_ShouldReturnFormattedList_WhenGivenCorrectList() throws IOException {
-        List<Racer> createdList = listOfRacers.createListOfRacers(abbreviations,starts,ends);
+        List<Racer> createdList = racersResults.createListOfRacers(abbreviations,starts,ends);
         List<String> actual = resultTable.formatListOfRacers(createdList);
         List<String> expecter = Arrays.asList(
                 "1.  Sebastian Vettel|FERRARI                  |01:04.415",
@@ -44,7 +45,7 @@ class ResultTableTest {
     }
     @Test
     void formatListOfRacers_ShouldReturnFormattedListWithSeperatedLine_WhenGivenCorrectList() throws IOException {
-        List<Racer> createdList = listOfRacers.createListOfRacers(abbreviations_19, starts_19, ends_19);
+        List<Racer> createdList = racersResults.createListOfRacers(abbreviations_19, starts_19, ends_19);
         List<String> actual = resultTable.formatListOfRacers(createdList);
         List<String> expected = Arrays.asList(
                 "1.  Sebastian Vettel |FERRARI                  |01:04.415",

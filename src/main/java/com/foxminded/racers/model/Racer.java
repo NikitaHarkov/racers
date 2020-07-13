@@ -3,7 +3,9 @@ package com.foxminded.racers.model;
 import java.util.Objects;
 
 public class Racer {
-    private final String abbreviation,name, team;
+    private final String abbreviation;
+    private final String name;
+    private final String team;
     private Long lapTime;
 
     public Racer(String abbreviation, String name, String team) {
@@ -41,5 +43,15 @@ public class Racer {
                 Objects.equals(name, racer.name) &&
                 Objects.equals(team, racer.team) &&
                 Objects.equals(lapTime, racer.lapTime);
+    }
+
+    @Override
+    public String toString() {
+        return "Racer{" +
+                "abbreviation='" + abbreviation + '\'' +
+                ", name='" + name + '\'' +
+                ", team='" + team + '\'' +
+                ", lapTime=" + lapTime +
+                '}';
     }
 }

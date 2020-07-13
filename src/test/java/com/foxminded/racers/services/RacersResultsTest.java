@@ -11,21 +11,22 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class ListOfRacersTest {
-    File abbreviations = new File("src/test/resources/abbreviations.txt");
-    File starts = new File("src/test/resources/start.log");
-    File ends = new File("src/test/resources/end.log");
+class RacersResultsTest {
+    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    File abbreviations = new File(classLoader.getResource("abbreviations.txt").getFile());
+    File starts = new File(classLoader.getResource("start.log").getFile());
+    File end = new File(classLoader.getResource("end.log").getFile());
 
-    ListOfRacers listOfRacers = new ListOfRacers();
+    RacersResults racersResults = new RacersResults();
 
     @Test
     void createListOfRacers_ShouldThrowException_WhenFilesAreNull() {
-        assertThrows(IllegalArgumentException.class, () -> listOfRacers.createListOfRacers(null, null, null));
+        assertThrows(IllegalArgumentException.class, () -> racersResults.createListOfRacers(null, null, null));
     }
 
     @Test
     void createListOfRacers_ShouldReturnSortedListOfRacersWithLapTime_WhenGivenCorrectFiles() throws IOException {
-        List<Racer> actual = listOfRacers.createListOfRacers(abbreviations, starts, ends);
+        List<Racer> actual = racersResults.createListOfRacers(abbreviations, starts, end);
         List<Racer> expected = Arrays.asList(
                 new Racer("SVF", "Sebastian Vettel", "FERRARI"),
                 new Racer("DRR", "Daniel Ricciardo", "RED BULL RACING TAG HEUER"),

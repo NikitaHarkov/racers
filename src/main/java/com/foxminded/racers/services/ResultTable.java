@@ -8,54 +8,53 @@ import java.util.List;
 import java.util.OptionalInt;
 
 public class ResultTable {
-    private static final char SPACE = ' ';
+
     private static final char VERTICAL_LINE = '|';
-    private static final char DASH = '-';
     private static final char DOT = '.';
     private static final int DOT_LENGTH = 1;
     private static final int SPACE_LENGTH = 1;
     private static final int VERTICAL_LINE_LENGTH = 1;
+    private static final int DELIMITER_LINE = 15;
+    private static final String DASH = "-";
+    private static final String SPACE = " ";
     private static final String DURATION_FORMAT = "mm:ss.SSS";
-    private List<Racer> racers;
 
-    public List<String> formatListOfRacers(List<Racer> raceData) {
-        if (raceData == null) {
+    public List<String> formatListOfRacers(List<Racer> racers) {
+        if (racers == null) {
             throw new IllegalArgumentException("Null is not allowed");
         }
-        if(raceData.isEmpty()){
+        if(racers.isEmpty()){
             throw new IllegalArgumentException("Empty list not allowed");
         }
-        this.racers = raceData;
         List<String> result = new ArrayList<>();
-        addLapsData(result, 15);
+        addLapsData(result,racers);
         return result;
     }
 
-    private void addLapsData(List<String> result, int eliminationDelimiter) {
+    private void addLapsData(List<String> result, List<Racer> racers) {
         for (int i = 0; i < racers.size(); i++) {
-            if (i == eliminationDelimiter) {
-                result.add(getDashesLine());
+            if (i == DELIMITER_LINE) {
+                result.add(getDashesLine(racers));
             }
-            result.add(getRacerLine(racers.get(i), i));
+            result.add(getRacerLine(racers.get(i), i, racers));
         }
     }
 
-    private String getDashesLine() {
-        int positionPartLength = ((int) (Math.log10(racers.size()))) + DOT_LENGTH + SPACE_LENGTH;
-        int racerPartLength = getMaxRacerNameLength() + VERTICAL_LINE_LENGTH;
-        int teamPartLength = getMaxTeamNameLength() + VERTICAL_LINE_LENGTH;
+    private String getDashesLine(List<Racer> racers) {
+        int positionPartLength = getPositionLength(racers);
+        int racerPartLength = getMaxRacerNameLength(racers) + VERTICAL_LINE_LENGTH;
+        int teamPartLength = getMaxTeamNameLength(racers) + VERTICAL_LINE_LENGTH;
         int durationPartLength = DURATION_FORMAT.length();
 
         int dashesLineLength = positionPartLength + racerPartLength + teamPartLength + durationPartLength;
-        String dash = "-";
-        return addSymbolsToString(dash, dashesLineLength, DASH);
+        return addSymbolsToString(DASH, dashesLineLength, DASH);
     }
 
-    private String getRacerLine(Racer racer, int position) {
+    private String getRacerLine(Racer racer, int position, List<Racer> racers) {
         StringBuilder racerData = new StringBuilder();
         racerData.append(getPositionPart(position));
-        racerData.append(getRacerPart(racer));
-        racerData.append(getTeamPart(racer));
+        racerData.append(getRacerPart(racer, racers));
+        racerData.append(getTeamPart(racer, racers));
         racerData.append(getLapTime(racer));
         return racerData.toString();
     }
@@ -67,21 +66,25 @@ public class ResultTable {
         if (((position + 1) / 10) > 0) {
             positionPart.append(SPACE);
         } else {
-            positionPart.append(Character.toString(SPACE) + SPACE);
+            positionPart.append(SPACE + SPACE);
         }
         return positionPart.toString();
     }
 
-    private String getRacerPart(Racer racer) {
+    private int getPositionLength(List<Racer> racers) {
+        return ((int) (Math.log10(racers.size()))) + DOT_LENGTH + SPACE_LENGTH;
+    }
+
+    private String getRacerPart(Racer racer, List<Racer> racers) {
         StringBuilder racerPart = new StringBuilder();
-        racerPart.append(addSymbolsToString(racer.getName(), getMaxRacerNameLength(), SPACE));
+        racerPart.append(addSymbolsToString(racer.getName(), getMaxRacerNameLength(racers), SPACE));
         racerPart.append(VERTICAL_LINE);
         return racerPart.toString();
     }
 
-    private String getTeamPart(Racer racer) {
+    private String getTeamPart(Racer racer, List<Racer> racers) {
         StringBuilder teamPart = new StringBuilder();
-        teamPart.append(addSymbolsToString(racer.getTeam(), getMaxTeamNameLength(), SPACE));
+        teamPart.append(addSymbolsToString(racer.getTeam(), getMaxTeamNameLength(racers), SPACE));
         teamPart.append(VERTICAL_LINE);
         return teamPart.toString();
     }
@@ -91,7 +94,7 @@ public class ResultTable {
         return formatter.format(racer.getLapTime());
     }
 
-    private int getMaxRacerNameLength() {
+    private int getMaxRacerNameLength(List<Racer> racers) {
         OptionalInt max = racers.stream()
                 .map(Racer::getName)
                 .mapToInt(String::length)
@@ -99,7 +102,7 @@ public class ResultTable {
         return max.orElse(0);
     }
 
-    private int getMaxTeamNameLength() {
+    private int getMaxTeamNameLength(List<Racer> racers) {
         OptionalInt max = racers.stream()
                 .map(Racer::getTeam)
                 .mapToInt(String::length)
@@ -107,7 +110,7 @@ public class ResultTable {
         return max.orElse(0);
     }
 
-    private String addSymbolsToString(String string, int totalLength, char symbol) {
+    private String addSymbolsToString(String string, int totalLength, String symbol) {
         StringBuilder result = new StringBuilder(string);
         int spaces = totalLength - string.length();
         result.append(String.valueOf(symbol).repeat(Math.max(0, spaces)));

@@ -14,7 +14,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FileReader {
+public class FileParser {
+    private static final int ABBREVIATION_END = 3;
+
     public List<Racer> parseRacersFromFile(File fileName) throws IOException {
         checkFile(fileName);
         Stream<String> dataFromFile = Files.lines(Paths.get(fileName.getAbsolutePath()));
@@ -60,8 +62,8 @@ public class FileReader {
     private Map<String, Long> parseEventTimeFromFile(File filePath) throws IOException {
         Stream<String> dataFromFile = Files.lines(Paths.get(filePath.getAbsolutePath()));
         return dataFromFile
-                .collect(Collectors.toMap(key -> key.substring(0, 3), value -> {
-                    String date = value.substring(3);
+                .collect(Collectors.toMap(key -> key.substring(0, ABBREVIATION_END), value -> {
+                    String date = value.substring(ABBREVIATION_END);
                     LocalDateTime localDateTime = LocalDateTime.parse(date,
                             DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSS"));
                     return localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();

@@ -10,11 +10,12 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LapDurationTest {
-    File starts = new File("src/test/resources/start.log");
-    File end = new File("src/test/resources/end.log");
+    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    File starts = new File(classLoader.getResource("start.log").getFile());
+    File end = new File(classLoader.getResource("end.log").getFile());
 
     LapDuration lapDuration = new LapDuration();
-    FileReader fileReader = new FileReader();
+    FileParser fileParser = new FileParser();
 
     @Test
     void calculateLapTime_ShouldThrowException_WhenGivenNull(){
@@ -28,8 +29,8 @@ class LapDurationTest {
 
     @Test
     void calculateLapTime_ShouldReturnCalculatedLapTime_WhenStartAndEndEventMapsAreGiven() throws IOException {
-        Map<String, Long> startEvent = fileReader.getStartEventTime(starts);
-        Map<String, Long> endEvent = fileReader.getEndEventTime(end);
+        Map<String, Long> startEvent = fileParser.getStartEventTime(starts);
+        Map<String, Long> endEvent = fileParser.getEndEventTime(end);
         Map<String, Long> actual = lapDuration.calculateLapTime(startEvent,endEvent);
         Map<String, Long> expected = new HashMap<>();
         expected.put("LHM", 72460L);
