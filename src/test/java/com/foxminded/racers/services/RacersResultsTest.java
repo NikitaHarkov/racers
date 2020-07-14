@@ -17,6 +17,7 @@ class RacersResultsTest {
     File starts = new File(classLoader.getResource("start.log").getFile());
     File end = new File(classLoader.getResource("end.log").getFile());
 
+
     RacersResults racersResults = new RacersResults();
 
     @Test

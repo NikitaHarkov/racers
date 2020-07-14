@@ -37,11 +37,6 @@ class FileParserTest {
     }
 
     @Test
-    void parseRacersFromFile_ShouldThrowException_WhenGivenWrongFile() {
-
-    }
-
-    @Test
     void parseRacersFromFile_ShouldReturnListOfRacers_WhenGivenFileWithRacers() throws IOException {
         List<Racer> actual = fileParser.parseRacersFromFile(abbreviations);
         List<Racer> expected = Arrays.asList(

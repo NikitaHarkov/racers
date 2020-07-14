@@ -17,44 +17,44 @@ import java.util.stream.Stream;
 public class FileParser {
     private static final int ABBREVIATION_END = 3;
 
-    public List<Racer> parseRacersFromFile(File fileName) throws IOException {
-        checkFile(fileName);
-        Stream<String> dataFromFile = Files.lines(Paths.get(fileName.getAbsolutePath()));
+    public List<Racer> parseRacersFromFile(File file) throws IOException {
+        checkFile(file);
+        Stream<String> dataFromFile = Files.lines(Paths.get(file.getAbsolutePath()));
         return dataFromFile.map(line -> line.split("_"))
                 .map(racer -> new Racer(racer[0], racer[1], racer[2]))
                 .collect(Collectors.toList());
     }
 
-    public Map<String, Long> getStartEventTime(File fileName) throws IOException {
-        checkFile(fileName);
-        return parseEventTimeFromFile(fileName);
+    public Map<String, Long> getStartEventTime(File file) throws IOException {
+        checkFile(file);
+        return parseEventTimeFromFile(file);
     }
 
-    public Map<String, Long> getEndEventTime(File fileName) throws IOException {
-        checkFile(fileName);
-        return parseEventTimeFromFile(fileName);
+    public Map<String, Long> getEndEventTime(File file) throws IOException {
+        checkFile(file);
+        return parseEventTimeFromFile(file);
     }
 
-    private void checkFile(File fileName) {
-        checkIfNull(fileName);
-        checkFileForExistence(fileName);
-        checkFileForEmptiness(fileName);
+    private void checkFile(File file) {
+        checkIfNull(file);
+        checkFileForExistence(file);
+        checkFileForEmptiness(file);
     }
 
-    private void checkIfNull(File fileName) {
-        if(fileName==null){
+    private void checkIfNull(File file) {
+        if (file == null) {
             throw new IllegalArgumentException("Null is not allowed");
         }
     }
 
-    private void checkFileForExistence(File fileName) {
-        if(!fileName.exists()){
+    private void checkFileForExistence(File file) {
+        if (!file.exists()) {
             throw new IllegalArgumentException("File doesn't exists");
         }
     }
 
-    private void checkFileForEmptiness(File fileName) {
-        if(fileName.length()==0){
+    private void checkFileForEmptiness(File file) {
+        if (file.length() == 0) {
             throw new IllegalArgumentException("File is empty");
         }
     }

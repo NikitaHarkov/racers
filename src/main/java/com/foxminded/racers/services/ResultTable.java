@@ -8,13 +8,12 @@ import java.util.List;
 import java.util.OptionalInt;
 
 public class ResultTable {
-
     private static final char VERTICAL_LINE = '|';
     private static final char DOT = '.';
     private static final int DOT_LENGTH = 1;
     private static final int SPACE_LENGTH = 1;
     private static final int VERTICAL_LINE_LENGTH = 1;
-    private static final int DELIMITER_LINE = 15;
+    private static final int TOP_SIZE = 15;
     private static final String DASH = "-";
     private static final String SPACE = " ";
     private static final String DURATION_FORMAT = "mm:ss.SSS";
@@ -28,12 +27,17 @@ public class ResultTable {
         }
         List<String> result = new ArrayList<>();
         addLapsData(result,racers);
+        printResult(result);
         return result;
+    }
+
+    private void printResult(List<String> result) {
+        result.forEach(System.out::println);
     }
 
     private void addLapsData(List<String> result, List<Racer> racers) {
         for (int i = 0; i < racers.size(); i++) {
-            if (i == DELIMITER_LINE) {
+            if (i == TOP_SIZE) {
                 result.add(getDashesLine(racers));
             }
             result.add(getRacerLine(racers.get(i), i, racers));

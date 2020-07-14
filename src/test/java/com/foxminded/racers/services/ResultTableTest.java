@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ResultTableTest {
     ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -24,29 +25,30 @@ class ResultTableTest {
     ResultTable resultTable = new ResultTable();
 
     @Test
-    void formatListOfRacers_ShouldThrowException_WhenGivenNull(){
-        assertThrows(IllegalArgumentException.class, ()->resultTable.formatRacersResults(null));
+    void formatListOfRacers_ShouldThrowException_WhenGivenNull() {
+        assertThrows(IllegalArgumentException.class, () -> resultTable.formatRacersResults(null));
     }
 
     @Test
-    void formatListOfRacers_ShouldThrowException_WhenGivenEmptyList(){
-        assertThrows(IllegalArgumentException.class, ()->resultTable.formatRacersResults(new ArrayList<>()));
+    void formatListOfRacers_ShouldThrowException_WhenGivenEmptyList() {
+        assertThrows(IllegalArgumentException.class, () -> resultTable.formatRacersResults(new ArrayList<>()));
     }
 
     @Test
     void formatListOfRacers_ShouldReturnFormattedList_WhenGivenCorrectList() throws IOException {
-        List<Racer> createdList = racersResults.createListOfRacers(abbreviations,starts,ends);
-        List<String> actual = resultTable.formatRacersResults(createdList);
-        List<String> expecter = Arrays.asList(
+        List<Racer> createdData = racersResults.createListOfRacers(abbreviations, starts, ends);
+        List<String> actual = resultTable.formatRacersResults(createdData);
+        List<String> expected = Arrays.asList(
                 "1.  Sebastian Vettel|FERRARI                  |01:04.415",
                 "2.  Daniel Ricciardo|RED BULL RACING TAG HEUER|01:12.013",
                 "3.  Lewis Hamilton  |MERCEDES                 |01:12.460");
-        assertEquals(expecter,actual);
+        assertEquals(expected, actual);
     }
+
     @Test
     void formatListOfRacers_ShouldReturnFormattedListWithSeperatedLine_WhenGivenCorrectList() throws IOException {
-        List<Racer> createdList = racersResults.createListOfRacers(abbreviations_19, starts_19, ends_19);
-        List<String> actual = resultTable.formatRacersResults(createdList);
+        List<Racer> createdData = racersResults.createListOfRacers(abbreviations_19, starts_19, ends_19);
+        List<String> actual = resultTable.formatRacersResults(createdData);
         List<String> expected = Arrays.asList(
                 "1.  Sebastian Vettel |FERRARI                  |01:04.415",
                 "2.  Daniel Ricciardo |RED BULL RACING TAG HEUER|01:12.013",
@@ -68,6 +70,6 @@ class ResultTableTest {
                 "17. Marcus Ericsson  |SAUBER FERRARI           |01:13.265",
                 "18. Lance Stroll     |WILLIAMS MERCEDES        |01:13.323",
                 "19. Kevin Magnussen  |HAAS FERRARI             |01:13.393");
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 }

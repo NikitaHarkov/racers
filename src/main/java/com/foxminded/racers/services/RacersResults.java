@@ -12,10 +12,12 @@ public class RacersResults {
     public List<Racer> createListOfRacers(File abbreviations, File start, File end) throws IOException {
         FileParser fileParser = new FileParser();
         List<Racer> racers = fileParser.parseRacersFromFile(abbreviations);
+
         LapDuration lapDuration = new LapDuration();
         Map<String, Long> lapTime = lapDuration.calculateLapTime(
                 fileParser.getStartEventTime(start),
                 fileParser.getEndEventTime(end));
+
         addLapTimeToRacers(racers, lapTime);
         sortByLapTime(racers);
         return racers;
