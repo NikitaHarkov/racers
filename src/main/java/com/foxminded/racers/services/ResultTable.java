@@ -22,17 +22,12 @@ public class ResultTable {
         if (racers == null) {
             throw new IllegalArgumentException("Null is not allowed");
         }
-        if(racers.isEmpty()){
+        if (racers.isEmpty()) {
             throw new IllegalArgumentException("Empty list not allowed");
         }
         List<String> result = new ArrayList<>();
-        addLapsData(result,racers);
-        printResult(result);
+        addLapsData(result, racers);
         return result;
-    }
-
-    private void printResult(List<String> result) {
-        result.forEach(System.out::println);
     }
 
     private void addLapsData(List<String> result, List<Racer> racers) {

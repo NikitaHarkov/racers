@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FileParser {
-    private static final int ABBREVIATION_END = 3;
+    private static final int ABBREVIATION_SIZE = 3;
 
     public List<Racer> parseRacersFromFile(File file) throws IOException {
         checkFile(file);
@@ -62,8 +62,8 @@ public class FileParser {
     private Map<String, Long> parseEventTimeFromFile(File filePath) throws IOException {
         Stream<String> dataFromFile = Files.lines(Paths.get(filePath.getAbsolutePath()));
         return dataFromFile
-                .collect(Collectors.toMap(key -> key.substring(0, ABBREVIATION_END), value -> {
-                    String date = value.substring(ABBREVIATION_END);
+                .collect(Collectors.toMap(key -> key.substring(0, ABBREVIATION_SIZE), value -> {
+                    String date = value.substring(ABBREVIATION_SIZE);
                     LocalDateTime localDateTime = LocalDateTime.parse(date,
                             DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSS"));
                     return localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
