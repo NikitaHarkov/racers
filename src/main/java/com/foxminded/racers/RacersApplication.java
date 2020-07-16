@@ -5,16 +5,17 @@ import com.foxminded.racers.services.RacersResults;
 import com.foxminded.racers.services.ResultTable;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 public class RacersApplication {
     public static void main(String[] args) {
         try {
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            File abbreviations = new File(classLoader.getResource("abbreviations.txt").getFile());
-            File starts = new File(classLoader.getResource("start.log").getFile());
-            File ends = new File(classLoader.getResource("end.log").getFile());
+            File abbreviations = getFile("abbreviations.txt");
+            File starts = getFile("start.log");
+            File ends = getFile("end2.log");
 
             RacersResults list = new RacersResults();
             try {
@@ -22,10 +23,19 @@ public class RacersApplication {
                 ResultTable resultTable = new ResultTable();
                 resultTable.formatRacersResults(racers).forEach(System.out::println);
             } catch (IOException ex) {
-                throw new IllegalArgumentException("Error with reading files");
+                System.out.println("Error with reading files:\n" + ex);
             }
-        } catch (NullPointerException ex) {
-            throw new IllegalArgumentException("Please, check for files");
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex + "\n Please, check for files!");
         }
+    }
+
+    private static File getFile(String file) throws FileNotFoundException {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        URL url = classLoader.getResource(file);
+        if (url == null) {
+            throw new FileNotFoundException();
+        }
+        return new File(url.getFile());
     }
 }
