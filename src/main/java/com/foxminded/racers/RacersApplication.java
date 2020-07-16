@@ -26,7 +26,7 @@ public class RacersApplication {
                 System.out.println("Error with reading files:\n" + ex);
             }
         } catch (FileNotFoundException ex) {
-            System.out.println(ex + "\n Please, check for files!");
+            System.out.println("Please, check for files!\n" + ex);
         }
     }
 
@@ -34,7 +34,7 @@ public class RacersApplication {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         URL url = classLoader.getResource(file);
         if (url == null) {
-            throw new FileNotFoundException();
+            throw new FileNotFoundException("File not found!");
         }
         return new File(url.getFile());
     }
